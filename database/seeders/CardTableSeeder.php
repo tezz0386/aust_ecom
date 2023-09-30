@@ -22,13 +22,16 @@ class CardTableSeeder extends Seeder
         DB::table('cards')->truncate();
         $faker = Factory::create();
         $customers = Customer::all();
+        $card_number = 9852562652145635;
+        $pin = 1111;
         foreach($customers as $customer){
             DB::table('cards')->insert([
                 'customer_id'=>$customer->id,
                 'bank_name'=>$faker->name(),
                 'card_holder_name'=>$customer->name,
-                'card_number'=>Hash::make($faker->numberBetween(1111111111111111, 9999999999999999)),
-                'pin'=>Hash::make($faker->numberBetween(1111, 9999)),
+                'card_number'=>Hash::make($card_number),
+                'pin'=>Hash::make($pin),
+                'balance'=>100,
             ]);
         }
         Schema::enableForeignKeyConstraints();

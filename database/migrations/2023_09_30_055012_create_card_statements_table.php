@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cards', function (Blueprint $table) {
+        Schema::create('card_statements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('customer_id')->constrained('customers');
-            $table->string('bank_name');
-            $table->string('card_holder_name');
-            $table->string('card_number');
-            $table->string('pin');
+            $table->foreignId('card_id')->constrained('cards');
             $table->double('balance')->default(0);
+            $table->double('amount')->default(0);
+            $table->boolean('is_debit')->default(true);
+            $table->text('remarks');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cards');
+        Schema::dropIfExists('card_statements');
     }
 };
