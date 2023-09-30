@@ -26,7 +26,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="" class="nav-link {{request()->is('home') ? 'active' : ''}}">
+                <a href="/home" class="nav-link {{request()->is('home') ? 'active' : ''}}">
                     <i class="nav-icon fas fa-th-large"></i>
                     <p>
                         Admin Dashboard
@@ -34,71 +34,14 @@
                 </a>
             </li>
 
-            @if(auth()->user()->can('Edit User') || auth()->user()->can('View User') || auth()->user()->can('Create User') || auth()->user()->can('Delete User'))
-              <li class="nav-item {{request()->is('user*') ? 'menu-open' : ''}}">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>
-                      Use Management
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  @if(auth()->user()->can('View User'))
-                    <li class="nav-item">
-                      <a href="{{route('user.index')}}" class="nav-link {{request()->is('user') ? 'active' : ''}}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>User List</p>
-                      </a>
-                    </li>
-                  @endif
-
-                  @if(auth()->user()->can('Create User'))
-                    <li class="nav-item">
-                      <a href="{{route('user.create')}}" class="nav-link {{request()->is('user/create') ? 'active' : ''}}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>Add User</p>
-                      </a>
-                    </li>
-                  @endif
-                </ul>
-              </li>
-            @endif
-
-
-
-            @if(auth()->user()->can('Edit Role') || auth()->user()->can('View Role') || auth()->user()->can('Create Role') || auth()->user()->can('Delete Role'))
-              <li class="nav-item {{request()->is('role*') ? 'menu-open' : ''}}">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-cog"></i>
-                    <p>
-                      Role Management
-                    <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  @if(auth()->user()->can('View Role'))
-                    <li class="nav-item">
-                      <a href="{{route('role.index')}}" class="nav-link {{request()->is('role') ? 'active' : ''}}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>Role List</p>
-                      </a>
-                    </li>
-                  @endif
-
-                  @if(auth()->user()->can('Create Role'))
-                    <li class="nav-item">
-                      <a href="{{route('role.create')}}" class="nav-link {{request()->is('role/create') ? 'active' : ''}}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>Add Role</p>
-                      </a>
-                    </li>
-                  @endif
-                </ul>
-              </li>
-            @endif
-
-
+            <li class="nav-item">
+              <a href="{{route('product.index')}}" class="nav-link {{request()->is('product') ? 'active' : ''}}">
+                  <i class="nav-icon fas fa-cog"></i>
+                  <p>
+                      Products
+                  </p>
+              </a>
+          </li>
         </ul>
       </nav>
     </div>

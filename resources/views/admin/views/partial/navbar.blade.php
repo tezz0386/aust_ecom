@@ -141,10 +141,7 @@
                 <a href="#" class="dropdown-item">
                   Profile
                 </a>
-                <a href="#" id="logout-btn" class="dropdown-item">
-                 Logout
-                </a>
-                <form action="{{route('logout')}}" id="logout-form" method="post" hidden>@csrf</form>
+                <form action="{{route('logout')}}" method="post">@csrf <button type="submit" class="btn btn-link">Logout</button></form>
             </div>
         </li>
      </ul>

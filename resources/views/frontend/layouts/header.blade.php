@@ -32,6 +32,12 @@
 									<a href="{{route('c_login.get')}}">Login</a>
 								@endif
 							</li>
+
+							@if(!auth()->guard('customer')->check())
+							<li class="active-menu">
+								<a href="{{route('c_login.get')}}">Register</a>
+							</li>
+							@endif
 							@if(auth()->guard('customer')->check())
 							<li class="active-menu">
 								<form action="{{route('c_logout')}}" method="post">

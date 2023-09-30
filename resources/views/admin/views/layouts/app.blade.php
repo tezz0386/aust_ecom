@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ env('APP_NAME') ?? 'Moneysewa' }}</title>
+    <title>{{ env('APP_NAME') ?? 'Ecommerce Test App' }}</title>
     <link href="http://transfer.test/assets/img/logo.png" rel="icon">
     @vite(['resources/views/admin/sass/app.scss', 'resources/views/admin/js/app.js'], 'admin')
     @stack('styles')

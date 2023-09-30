@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Auth\CustomerLoginController;
 use App\Http\Controllers\Customer\DashboardController;
+use App\Http\Controllers\Item\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,8 @@ Route::post('/login', [CustomerLoginController::class, 'login'])->name('c_login.
 
 
 Route::group(['middleware'=>'auth'], function(){
-    Route::get('home', HomeController::class);
+    Route::get('home', HomeController::class)->name('admin.home');
+    Route::resource('product', ProductController::class);
 });
 
 

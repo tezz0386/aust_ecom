@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Bank\CardStatement;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,10 +19,15 @@ class DashboardController extends Controller
         return view('frontend.dashboard');
     }
 
-    public function getOrders()
+    public function getOrders(Request $request)
     {
+        $filters = $request->all();
         $user = auth()->guard('customer')->user();
-        $orders = Order::where('customer_id', $user->id)->latest()->get();
+        $orders = Order::where('customer_id', $user->id)
+        ->when(Arr::get($filters, 'search_query'), function($q, $value){
+            $q->where('id', $value);
+        })
+        ->latest()->get();
         return $this->mobileData($orders);
     }
 
