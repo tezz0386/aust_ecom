@@ -2,8 +2,9 @@
 @push('styles')
     <style>
         .custom-sidebar {
-            background-color: #333;
+            background-color: #dfd4d4;
             color: #fff;
+            height: 400px
         }
         .custom-sidebar .list-group-item {
             background-color: #dfd4d4;
@@ -16,6 +17,9 @@
         /* Custom content styles */
         .custom-content {
             padding: 20px;
+        }
+        .active-custom-link{
+            background-color: green !important;
         }
     </style>
 @endpush

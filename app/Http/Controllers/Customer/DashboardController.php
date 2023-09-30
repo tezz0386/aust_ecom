@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Market\Order;
 use Illuminate\Http\Request;
+use App\Models\Bank\CardStatement;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
@@ -39,6 +41,73 @@ class DashboardController extends Controller
             $order->save();
             DB::commit();
             return $this->mobileSuccess("Successfully Cancelled");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return $this->mobileError();
+        }
+    }
+
+    public function checkCard(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'card_number'=>'required|numeric',
+            'pin'=>'required|numeric',
+        ]);
+        if($validator->fails()){
+            return $this->mobileValidationError($validator->errors());
+        }
+        $user = auth()->guard('customer')->user();
+        $card = $user->card;
+        $pin = $request->pin;
+        $card_number = $request->card_number;
+        if(!Hash::check($card_number, $card->card_number) || !Hash::check($pin, $card->pin)) {
+            return $this->mobileError("Sorry, the Card Number or PIN does not match.", 401);
+        }
+        return $this->mobileSuccess("Success, Your Card Number And The Card Pin Matched");
+    }
+
+    public function getCard()
+    {
+        $user = auth()->guard('customer')->user();
+        $card = $user->card;
+        return $this->mobileData($card);
+    }
+
+    public function addBalance(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'card_number'=>'required|numeric',
+            'pin'=>'required|numeric',
+            'balance'=>'required|numeric',
+        ]);
+        if($validator->fails()){
+            return $this->mobileValidationError($validator->errors());
+        }
+        $user = auth()->guard('customer')->user();
+        $card = $user->card;
+        $pin = $request->pin;
+        $card_number = $request->card_number;
+        // if(!Hash::check($card_number, $card->card_number) || !Hash::check($pin, $card->pin)) {
+        //     return $this->mobileError("Sorry, the Card Number or PIN does not match.", 401);
+        // }
+        $balance = $request->balance;
+        DB::beginTransaction();
+        try {
+            $cardStatement = new CardStatement();
+            $newSaveData = [
+                'customer_id'=>$user->id,
+                'card_id'=>$card->id,
+                'balance'=>$card->balance,
+                'amount'=>$balance,
+                'is_debit'=>false,
+                'remarks'=>'Purchase',
+            ];
+            $cardStatement->fill($newSaveData);
+            $cardStatement->save();
+            $card->balance = $card->balance + $balance;
+            $card->save();
+            DB::commit();
+            return $this->mobileSuccess("Successfully Your Balance has been added");
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->mobileError();

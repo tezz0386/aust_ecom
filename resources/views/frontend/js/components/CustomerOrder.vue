@@ -22,6 +22,7 @@
                 </td>
                 <td>
                     <a href="#" v-if="order.status == 1" class="btn btn-sm btn-danger" @click="cancelOrder(order)">Cancel</a>
+                    <span class="badge bg-danger" v-if="order.status !== 1">Action Not Available</span>
                 </td>
             </tr>
             <tr  v-if="!this.loading && (this.orders.length <= 0)">

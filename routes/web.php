@@ -36,7 +36,6 @@ Route::group(['middleware'=>'auth'], function(){
 });
 
 
-
 Route::group(['middleware'=>['auth:customer']], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('customer.dashboard');
     Route::post('/logout', [CustomerLoginController::class, 'logout'])->name('c_logout');
@@ -44,5 +43,8 @@ Route::group(['middleware'=>['auth:customer']], function(){
         Route::post('purchase-item', [PurchaseController::class, 'purchaseItem']);
         Route::get('/get-orders', [DashboardController::class, 'getOrders']);
         Route::post('/cancel-order', [DashboardController::class, 'cancelOrder']);
+        Route::post('/check-card', [DashboardController::class, 'checkCard']);
+        Route::get('/get-card', [DashboardController::class, 'getCard']);
+        Route::post('/get-card', [DashboardController::class, 'addBalance']);
     });
 });
