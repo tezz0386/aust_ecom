@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Bank\Card;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -40,4 +42,9 @@ class Customer extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function card():HasOne
+    {
+        return $this->hasOne(Card::class, 'customer_id');
+    }
 }

@@ -9,10 +9,12 @@ import "./bootstrap";
 
 import { createApp } from "vue/dist/vue.esm-bundler";
 import IndexProduct from './components/IndexProduct.vue';
+import CustomerDashboard from './components/CustomerDashboard.vue';
 
 const app = createApp({
     components:{
         IndexProduct,
+        CustomerDashboard,
     }
 });
 

@@ -123,10 +123,13 @@
                                                 @click="increaseQty()">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
+                                            <br>
+                                            <span class="text-danger" v-if="this.errors['qty']">{{ this.errors['qty'][0] }}</span>
                                         </div>
 
                                         <button
-                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                            class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
+                                            @click="purchaseItem()">
                                             Purchase
                                         </button>
                                     </div>
@@ -138,9 +141,43 @@
             </div>
         </div>
     </div>
+
+
+
+    <!-- Modal1 -->
+    <div class="wrap-modal1 wrap-modal5 js-modal1 p-t-60 p-b-20" :class="{ 'show-modal1': this.show_card_check }"
+        v-if="this.single_product">
+        <div class="overlay-modal1 js-hide-modal1"></div>
+        <div class="container">
+            <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+                <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                    <img src="/asset/images/icons/icon-close.png" alt="CLOSE" @click="this.show_card_check = false">
+                </button>
+                <div class="row">
+                    <div class="container">
+                        <div class="col-md-12 col-lg-12 p-b-30">
+                            <div class="form-group">
+                                <label for="">Card Number</label>
+                                <input type="number" name="card_number" class="form-control" v-model="this.purchanse_item.card_number">
+                                <span class="text-danger" v-if="this.errors['card_number']">{{ this.errors['card_number'][0] }}</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Pin</label>
+                                <input type="number" name="card_number" class="form-control" v-model="this.purchanse_item.pin">
+                                <span class="text-danger" v-if="this.errors['pin']">{{ this.errors['pin'][0] }}</span>
+                            </div>
+                            <button class="btn btn-primary btn-lg float-right" @click="submitPurchase()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
     props: {
         is_auth: {
@@ -156,10 +193,14 @@ export default {
             products: [],
             loading: true,
             single_product: null,
-
+            show_card_check: false,
+            load_purchase: false,
+            errors:[],
             purchanse_item: {
                 product: this.single_product,
                 qty: 1,
+                card_number:null,
+                pin:null,
             }
         }
     },
@@ -168,8 +209,13 @@ export default {
     },
     methods: {
         setSingleProduct(event, product) {
+            if(this.is_auth === 0){
+                window.location.href = '/login';
+                return;
+            }
             event.preventDefault();
             this.single_product = product;
+            this.purchanse_item.product = this.single_product;
         },
         increaseQty() {
             if (this.single_product.stock_qty <= this.purchanse_item.qty) {
@@ -204,7 +250,44 @@ export default {
             } finally {
                 this.loading = false;
             }
+        },
+        async purchaseItem() {
+            this.show_card_check = true;
+        },
+        async submitPurchase(){
+            this.load_purchase = true;
+            await axios.post('purchase-item', {
+                ...this.purchanse_item,
+            }).then((response) => {
+                toast.success(response.data.message, {
+                    autoClose: 1000,
+                });
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                    return;
+                }, 100);
+                this.single_product = null;
+                this.show_card_check= false;
+            }).catch((error) => {
+                toast.error(error.response.data.message, {
+                    autoClose: 1000,
+                });
+                if(error.response.status == 422){
+                    this.errors = error.response.data.data;
+                }
+            }).finally(() => {
+                this.load_purchase = false;
+            })
         }
     }
 }
 </script>
+
+
+<style scoped>
+.wrap-modal5 {
+    width: 50%;
+    left: 25%;
+    top: 100px;
+}
+</style>

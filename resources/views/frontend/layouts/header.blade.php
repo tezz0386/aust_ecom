@@ -22,6 +22,26 @@
 							</li>
 						</ul>
 					</div>	
+					
+					<div class="wrap-icon-header flex-w flex-r-m">
+						<ul class="main-menu">
+							<li>
+								@if(auth()->guard('customer')->check())
+									<a href="{{url('dashboard')}}">{{auth()->guard('customer')->user()->name}}</a>
+								@else
+									<a href="{{route('c_login.get')}}">Login</a>
+								@endif
+							</li>
+							@if(auth()->guard('customer')->check())
+							<li class="active-menu">
+								<form action="{{route('c_logout')}}" method="post">
+									@csrf
+									<button type="submit">Logout</button>
+								</form>
+							</li>
+							@endif
+						</ul>
+					</div>
 				</nav>
 			</div>	
 		</div>
@@ -59,21 +79,5 @@
 					<a href="#">Test</a>
 				</li>
 			</ul>
-		</div>
-
-		<!-- Modal Search -->
-		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-			<div class="container-search-header">
-				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="/asset/images/icons/icon-close2.png" alt="CLOSE">
-				</button>
-
-				<form class="wrap-search-header flex-w p-l-15">
-					<button class="flex-c-m trans-04">
-						<i class="zmdi zmdi-search"></i>
-					</button>
-					<input class="plh3" type="text" name="search" placeholder="Search...">
-				</form>
-			</div>
 		</div>
 	</header>
