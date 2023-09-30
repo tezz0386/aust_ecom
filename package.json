@@ -1,0 +1,29 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "vite --config resources/views/frontend/vite.config.js",
+        "build": "vite build --config resources/views/frontend/vite.config.js",
+        "dev:admin": "vite --config resources/views/admin/vite.config.js",
+        "build:admin": "vite build --config resources/views/admin/vite.config.js"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.0.0",
+        "axios": "^1.1.2",
+        "bootstrap": "^4.6.2",
+        "laravel-vite-plugin": "^0.7.2",
+        "lodash": "^4.17.19",
+        "popper.js": "^1.16",
+        "postcss": "^8.1.14",
+        "sass": "^1.56.1",
+        "sass-loader": "^10.1.1",
+        "vite": "^4.0.0",
+        "vue": "^3.2.47"
+    },
+    "dependencies": {
+        "admin-lte": "^3.2.0",
+        "create-vite": "^4.1.0",
+        "jquery": "^3.6.4",
+        "vue3-select2-component": "^0.1.7",
+        "vuex": "^4.0.2"
+    }
+}
